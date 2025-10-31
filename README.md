@@ -2,97 +2,326 @@
   <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
 </p>
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+# RamonChat Backend
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+API REST para un sistema de chat con inteligencia artificial utilizando OpenAI GPT-4o.
 
-## Description
+## Características
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+- Autenticación JWT
+- Gestión de usuarios
+- Conversaciones con IA (OpenAI GPT-4o)
+- Historial de mensajes persistente
+- Títulos de chat generados automáticamente con IA
+- Base de datos PostgreSQL
+- Documentación automática con Swagger
+- Validación de datos con class-validator
+- TypeORM para manejo de base de datos
 
-## Project setup
+## Tecnologías
 
-```bash
-$ npm install
-```
+- **Framework**: NestJS 11
+- **Base de datos**: PostgreSQL
+- **ORM**: TypeORM
+- **Autenticación**: JWT con Passport
+- **IA**: OpenAI API (GPT-4o)
+- **Documentación**: Swagger/OpenAPI
+- **Validación**: class-validator
+- **Lenguaje**: TypeScript
 
-## Compile and run the project
+## Instalación
 
-```bash
-# development
-$ npm run start
+### Requisitos previos
 
-# watch mode
-$ npm run start:dev
+- Node.js 18+
+- PostgreSQL 14+
+- npm o yarn
+- Cuenta de OpenAI con API key
 
-# production mode
-$ npm run start:prod
-```
+### Pasos de instalación
 
-## Run tests
+1. **Clonar el repositorio**
 
 ```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+git clone <url-del-repositorio>
+cd ramonchat-back
 ```
 
-## Deployment
-
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+2. **Instalar dependencias**
 
 ```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
+npm install
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+3. **Configurar variables de entorno**
 
-## Resources
+Crear un archivo `.env` en la raíz del proyecto:
 
-Check out a few resources that may come in handy when working with NestJS:
+```env
+# Database Configuration
+DB_HOST=localhost
+DB_PORT=5432
+DB_USERNAME=postgres
+DB_PASSWORD=tu_contraseña
+DB_NAME=ramonchat
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+# JWT Configuration
+JWT_SECRET=tu_secret_key_muy_seguro
+JWT_EXPIRES_IN=36000s
 
-## Support
+# OpenAI Configuration
+OPENAI_API_KEY=tu_api_key_de_openai
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+# Application
+PORT=3000
+```
 
-## Stay in touch
+4. **Crear la base de datos**
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+```bash
+# Conectar a PostgreSQL
+psql -U postgres
 
-## License
+# Crear la base de datos
+CREATE DATABASE ramonchat;
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+# Salir de psql
+\q
+```
+
+5. **Iniciar la aplicación**
+
+```bash
+# Modo desarrollo
+npm run start:dev
+
+# Modo producción
+npm run build
+npm run start:prod
+```
+
+## Documentación API
+
+Una vez iniciada la aplicación, la documentación interactiva de Swagger estará disponible en:
+
+```
+http://localhost:3000/api/docs
+```
+
+## Endpoints Principales
+
+### Autenticación
+
+| Método | Endpoint         | Descripción                  | Auth |
+| ------ | ---------------- | ---------------------------- | ---- |
+| POST   | `/auth/register` | Registrar nuevo usuario      | No   |
+| POST   | `/auth/login`    | Iniciar sesión (retorna JWT) | No   |
+
+### Usuarios
+
+| Método | Endpoint                 | Descripción            | Auth |
+| ------ | ------------------------ | ---------------------- | ---- |
+| POST   | `/users`                 | Crear usuario          | No   |
+| GET    | `/users`                 | Listar usuarios        | JWT  |
+| GET    | `/users/:id`             | Obtener usuario por ID | No   |
+| GET    | `/users/email?email=...` | Buscar por email       | No   |
+| DELETE | `/users/:id`             | Eliminar usuario       | No   |
+
+### Chats
+
+| Método | Endpoint              | Descripción                    | Auth |
+| ------ | --------------------- | ------------------------------ | ---- |
+| POST   | `/chats`              | Crear nuevo chat               | No   |
+| GET    | `/chats`              | Obtener chats del usuario      | JWT  |
+| GET    | `/chats/:id/messages` | Obtener mensajes de un chat    | No   |
+| DELETE | `/chats/:id`          | Eliminar chat (y sus mensajes) | No   |
+
+### Mensajes
+
+| Método | Endpoint                | Descripción                          | Auth |
+| ------ | ----------------------- | ------------------------------------ | ---- |
+| POST   | `/messages/new-message` | Enviar mensaje (recibe respuesta IA) | No   |
+
+## Ejemplos de Uso
+
+### 1. Registrar usuario
+
+```bash
+POST http://localhost:3000/auth/register
+Content-Type: application/json
+
+{
+  "username": "Juan Pérez",
+  "email": "juan@example.com",
+  "password": "password123"
+}
+```
+
+### 2. Iniciar sesión
+
+```bash
+POST http://localhost:3000/auth/login
+Content-Type: application/json
+
+{
+  "email": "juan@example.com",
+  "password": "password123"
+}
+```
+
+**Respuesta:**
+
+```json
+{
+  "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+  "user": {
+    "id": "uuid",
+    "username": "Juan Pérez",
+    "email": "juan@example.com"
+  }
+}
+```
+
+### 3. Crear un chat
+
+```bash
+POST http://localhost:3000/chats
+Content-Type: application/json
+
+{
+  "userId": "f1cd4d95-b1a8-49ba-9187-262a9dbee382",
+  "message": "¿Cómo puedo aprender TypeScript?",
+  "sender": "user"
+}
+```
+
+**Respuesta:**
+
+```json
+{
+  "id": "chat-uuid",
+  "message": "TypeScript es un superset de JavaScript...",
+  "sender": "assistant",
+  "created_at": "2025-10-31T15:30:00.000Z"
+}
+```
+
+### 4. Enviar mensaje a un chat existente
+
+```bash
+POST http://localhost:3000/messages/new-message
+Content-Type: application/json
+
+{
+  "chat_id": "chat-uuid",
+  "message": "¿Puedes darme un ejemplo práctico?",
+  "sender": "user"
+}
+```
+
+### 5. Obtener mensajes de un chat
+
+```bash
+GET http://localhost:3000/chats/chat-uuid/messages
+```
+
+## Estructura de la Base de Datos
+
+### Tabla: users
+
+```sql
+id          UUID PRIMARY KEY
+username    VARCHAR NOT NULL
+email       VARCHAR UNIQUE NOT NULL
+password    VARCHAR NOT NULL
+```
+
+### Tabla: chats
+
+```sql
+id          UUID PRIMARY KEY
+title       VARCHAR NOT NULL
+userId      UUID FOREIGN KEY -> users(id)
+```
+
+### Tabla: messages
+
+```sql
+id          UUID PRIMARY KEY
+message     TEXT NOT NULL
+sender      VARCHAR NOT NULL ('user' | 'assistant')
+chatId      UUID FOREIGN KEY -> chats(id) ON DELETE CASCADE
+created_at  TIMESTAMP
+updated_at  TIMESTAMP
+```
+
+## Arquitectura
+
+```
+src/
+├── auth/              # Módulo de autenticación
+├── users/             # Módulo de usuarios
+├── chats/             # Módulo de chats
+├── messages/          # Módulo de mensajes
+├── openai/            # Módulo de integración con OpenAI
+├── guards/            # Guards personalizados (JWT)
+├── app.module.ts      # Módulo principal
+└── main.ts            # Punto de entrada
+```
+
+## Seguridad
+
+- Contraseñas hasheadas con bcrypt
+- Autenticación JWT
+- Validación de datos con class-validator
+- Variables de entorno para secretos
+- CORS configurado
+
+## Scripts Disponibles
+
+```bash
+# Desarrollo
+npm run start:dev        # Inicia en modo desarrollo con hot-reload
+
+# Producción
+npm run build            # Compila el proyecto
+npm run start:prod       # Inicia en modo producción
+
+# Testing
+npm run test             # Ejecuta tests unitarios
+npm run test:e2e         # Ejecuta tests end-to-end
+npm run test:cov         # Cobertura de tests
+
+# Linting
+npm run lint             # Ejecuta ESLint
+npm run format           # Formatea código con Prettier
+```
+
+## Características de la IA
+
+- **Modelo**: GPT-4o (más rápido y económico que GPT-4)
+- **Memoria**: Mantiene contexto de toda la conversación
+- **Títulos**: Genera títulos automáticamente con GPT-4o-mini
+- **Optimización**: Consultas paralelas para mejor rendimiento
+
+## Optimizaciones Implementadas
+
+- Queries paralelas con `Promise.all()`
+- Select específico de columnas (reduce transferencia de datos)
+- Una sola consulta de historial por mensaje
+- Mapeo eficiente de mensajes
+- Eliminación en cascada de mensajes
+
+## Contribuciones
+
+Las contribuciones son bienvenidas. Por favor:
+
+1. Fork el proyecto
+2. Crea una rama para tu feature (`git checkout -b feature/AmazingFeature`)
+3. Commit tus cambios (`git commit -m 'Add some AmazingFeature'`)
+4. Push a la rama (`git push origin feature/AmazingFeature`)
+5. Abre un Pull Request
+
+---
+
+Desarrollado usando NestJS y OpenAI
