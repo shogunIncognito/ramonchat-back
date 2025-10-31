@@ -16,7 +16,7 @@ export class Chat {
   @Column()
   title: string;
 
-  @OneToMany(() => Message, (message) => message.chat)
+  @OneToMany(() => Message, (message) => message.chat, { onDelete: 'CASCADE' })
   messages: Message[];
 
   @ManyToOne(() => User, (user) => user.chats)

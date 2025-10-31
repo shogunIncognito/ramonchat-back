@@ -1,7 +1,17 @@
-import { Controller, Get, Post, Body, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Request,
+  UseGuards,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { ChatsService } from './chats.service';
 import { CreateChatDto } from './dto/create-chat.dto';
-import { UpdateChatDto } from './dto/update-chat.dto';
+import { AuthGuard } from 'src/guards/auth/auth.guard';
+import { RequestDTO } from './dto/get-user-messages-dto';
 
 @Controller('chats')
 export class ChatsController {
@@ -12,23 +22,19 @@ export class ChatsController {
     return this.chatsService.create(createChatDto);
   }
 
-  @Post('new-message/:id')
-  newMessage(@Param('id') id: string, @Body() updateChatDto: UpdateChatDto) {
-    return this.chatsService.newMessage(id, updateChatDto);
-  }
-
+  @UseGuards(AuthGuard)
   @Get()
-  findAll() {
-    return this.chatsService.findAll();
+  getUserChats(@Request() req: RequestDTO) {
+    return this.chatsService.getUserChats(req.user);
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.chatsService.findOne(id);
+  @Get(':id/messages')
+  getChatMessages(@Param('id') id: string) {
+    return this.chatsService.getChatMessages(id);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.chatsService.remove(+id);
+  deleteChat(@Param('id') id: string) {
+    return this.chatsService.deleteChat(id);
   }
 }

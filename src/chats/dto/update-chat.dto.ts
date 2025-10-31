@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsNotEmpty, IsString, IsUUID } from 'class-validator';
 
 export enum Sender {
   USER = 'user',
@@ -6,6 +6,10 @@ export enum Sender {
 }
 
 export class UpdateChatDto {
+  @IsUUID()
+  @IsNotEmpty()
+  chat_id: string;
+
   @IsString()
   @IsNotEmpty()
   message: string;
