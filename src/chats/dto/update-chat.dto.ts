@@ -2,7 +2,7 @@ import { IsNotEmpty, IsString, IsUUID } from 'class-validator';
 
 export enum Sender {
   USER = 'user',
-  BOT = 'bot',
+  ASSISTANT = 'assistant',
 }
 
 export class UpdateChatDto {

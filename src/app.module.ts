@@ -8,6 +8,7 @@ import { User } from './users/entities/user.entity';
 import { Message } from './messages/entities/message.entity';
 import { Chat } from './chats/entities/chat.entity';
 import { AuthModule } from './auth/auth.module';
+import { OpenaiModule } from './openai/openai.module';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { AuthModule } from './auth/auth.module';
     ChatsModule,
     MessagesModule,
     AuthModule,
+    OpenaiModule,
   ],
   controllers: [],
   providers: [],

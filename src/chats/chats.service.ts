@@ -9,17 +9,21 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Chat } from './entities/chat.entity';
 import { Repository } from 'typeorm';
 import { MessagesService } from 'src/messages/messages.service';
+import { OpenaiService } from 'src/openai/openai.service';
 
 @Injectable()
 export class ChatsService {
   constructor(
     @InjectRepository(Chat) private readonly chatsRepository: Repository<Chat>,
     private readonly messagesServices: MessagesService,
+    private readonly openaiService: OpenaiService,
   ) {}
 
   async create(createChatDto: CreateChatDto) {
     try {
-      const generatedTitle = 'titulo generado por ia';
+      const generatedTitle = await this.openaiService.generateChatTitle(
+        createChatDto.message,
+      );
 
       const newChat = this.chatsRepository.create({
         title: createChatDto.title || generatedTitle,

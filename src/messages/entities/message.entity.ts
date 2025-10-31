@@ -1,3 +1,4 @@
+import { Sender } from 'src/chats/dto/update-chat.dto';
 import { Chat } from 'src/chats/entities/chat.entity';
 import {
   Column,
@@ -30,7 +31,7 @@ export class Message {
   updated_at: Date;
 
   @Column()
-  sender: string;
+  sender: Sender;
 
   @ManyToOne(() => Chat, (chat) => chat.messages, { onDelete: 'CASCADE' })
   chat: Chat;

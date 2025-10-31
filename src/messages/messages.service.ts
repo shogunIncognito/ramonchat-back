@@ -8,6 +8,7 @@ import { Message } from './entities/message.entity';
 import { Repository } from 'typeorm';
 import { Sender, UpdateChatDto } from 'src/chats/dto/update-chat.dto';
 import { Chat } from 'src/chats/entities/chat.entity';
+import { OpenaiService } from 'src/openai/openai.service';
 
 @Injectable()
 export class MessagesService {
@@ -16,11 +17,18 @@ export class MessagesService {
     private readonly messagesRepository: Repository<Message>,
     @InjectRepository(Chat)
     private readonly chatsRepository: Repository<Chat>,
+    private readonly openaiService: OpenaiService,
   ) {}
   async newMessage(updateChatDto: UpdateChatDto) {
-    const chat = await this.chatsRepository.findOne({
-      where: { id: updateChatDto.chat_id },
-    });
+    const [chat, messages] = await Promise.all([
+      this.chatsRepository.findOne({
+        where: { id: updateChatDto.chat_id },
+      }),
+      this.messagesRepository.find({
+        where: { chat: { id: updateChatDto.chat_id } },
+        order: { created_at: 'ASC' },
+      }),
+    ]);
 
     if (!chat) {
       throw new BadRequestException('Chat no encontrado');
@@ -31,18 +39,24 @@ export class MessagesService {
       sender: updateChatDto.sender,
       chat: chat,
     });
-    await this.messagesRepository.save(userMessage);
+    void this.messagesRepository.save(userMessage); // se guarda sin await para optimizar tiempo
 
-    const messageFromIA = 'esta es la respuesta de la ia';
+    const messageFromIA = await this.openaiService.processChat(
+      updateChatDto.message,
+      [...messages, userMessage].map((msg) => ({
+        content: msg.message,
+        role: msg.sender,
+      })),
+    );
 
     const iaMessage = this.messagesRepository.create({
       message: messageFromIA,
-      sender: Sender.BOT,
+      sender: Sender.ASSISTANT,
       chat: chat,
     });
-    await this.messagesRepository.save(iaMessage);
+    void this.messagesRepository.save(iaMessage);
 
-    return iaMessage;
+    return { message: messageFromIA, role: 'assistant', id_chat: chat.id };
   }
 
   async getMessagesByChatId(chatId: string) {
