@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import {
   Injectable,
   InternalServerErrorException,
@@ -10,6 +11,7 @@ import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from 'src/users/users.service';
 import { ConfigService } from '@nestjs/config';
+import { IncomingMessage } from 'http';
 
 @Injectable()
 export class AuthService {
@@ -60,5 +62,27 @@ export class AuthService {
     });
 
     return { accessToken };
+  }
+
+  async validateToken(request: IncomingMessage) {
+    try {
+      const token = request.headers.authorization?.split(' ')[1];
+
+      if (!token) {
+        throw new UnauthorizedException('Token no proporcionado');
+      }
+
+      const decoded = await this.jwtService.verifyAsync(token, {
+        secret: this.configService.get<string>('JWT_SECRET'),
+      });
+      return { valid: true, decoded };
+    } catch (error: any) {
+      if (error instanceof UnauthorizedException) {
+        throw error;
+      }
+
+      console.log(error);
+      throw new UnauthorizedException('Token inválido o expirado');
+    }
   }
 }

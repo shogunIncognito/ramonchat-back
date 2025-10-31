@@ -8,7 +8,8 @@ async function bootstrap() {
 
   // Validación global
   app.useGlobalPipes(new ValidationPipe());
-
+  app.enableCors();
+  app.setGlobalPrefix('api');
   // Configuración de Swagger
   const config = new DocumentBuilder()
     .setTitle('RamonChat API')
