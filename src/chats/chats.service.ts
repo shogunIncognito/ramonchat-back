@@ -32,11 +32,12 @@ export class ChatsService {
 
       await this.chatsRepository.save(newChat);
 
-      return this.messagesServices.newMessage({
+      const newMessage = await this.messagesServices.newMessage({
         chat_id: newChat.id,
         message: createChatDto.message,
         sender: Sender.USER,
       });
+      return { chat: newChat, message: newMessage };
     } catch (error: any) {
       console.log(error);
       throw new InternalServerErrorException('Error al crear chat.');
@@ -47,6 +48,7 @@ export class ChatsService {
     try {
       const userMessages = await this.chatsRepository.find({
         where: { user: { id: user.id_user } },
+        order: { updated_at: 'DESC' },
       });
 
       return userMessages;

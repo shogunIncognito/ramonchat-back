@@ -35,7 +35,11 @@ export class AuthService {
         throw new UnauthorizedException('Credenciales inválidas');
       }
 
-      const payload = { id_user: user.id, email: user.email };
+      const payload = {
+        id_user: user.id,
+        email: user.email,
+        username: user.username,
+      };
       const accessToken = this.jwtService.sign(payload, {
         secret: this.configService.get<string>('JWT_SECRET'),
       });
@@ -55,13 +59,17 @@ export class AuthService {
 
   async register(credentials: RegisterAuthDto) {
     const newUser = await this.usersService.create(credentials);
-    const payload = { id_user: newUser.id, email: newUser.email };
+    const payload = {
+      id_user: newUser.id,
+      email: newUser.email,
+      username: newUser.username,
+    };
 
     const accessToken = this.jwtService.sign(payload, {
       secret: this.configService.get<string>('JWT_SECRET'),
     });
 
-    return { accessToken };
+    return { accessToken, user: newUser };
   }
 
   async validateToken(request: IncomingMessage) {
@@ -72,10 +80,10 @@ export class AuthService {
         throw new UnauthorizedException('Token no proporcionado');
       }
 
-      const decoded = await this.jwtService.verifyAsync(token, {
+      const user = await this.jwtService.verifyAsync(token, {
         secret: this.configService.get<string>('JWT_SECRET'),
       });
-      return { valid: true, decoded };
+      return { valid: true, user };
     } catch (error: any) {
       if (error instanceof UnauthorizedException) {
         throw error;

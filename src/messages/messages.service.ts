@@ -54,9 +54,14 @@ export class MessagesService {
       sender: Sender.ASSISTANT,
       chat: chat,
     });
-    void this.messagesRepository.save(iaMessage);
+    await this.messagesRepository.save(iaMessage);
 
-    return { message: messageFromIA, role: 'assistant', id_chat: chat.id };
+    return {
+      message: messageFromIA,
+      created_at: iaMessage.created_at,
+      role: 'assistant',
+      id_chat: chat.id,
+    };
   }
 
   async getMessagesByChatId(chatId: string) {
